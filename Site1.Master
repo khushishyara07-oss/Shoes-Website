@@ -1,0 +1,105 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.Master.cs" Inherits="Shoes_Project.SiteMaster" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SHOESS — Premium Footwear</title>
+    <link href="~/css/Site.css" rel="stylesheet" type="text/css" />
+    <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+
+        <!-- ===== Header & Navigation ===== -->
+        <header class="site-header">
+            <nav class="nav container">
+                <a href="Default.aspx" class="nav-logo">SHOE<span>SS</span></a>
+                <div class="nav-links">
+                    <a href="Default.aspx">Home</a>
+                    <a href="Products.aspx">Products</a>
+                    <a href="About.aspx">About</a>
+                    <a href="Contact.aspx">Contact</a>
+
+                    <% if (Session["user"] == null) { %>
+                        <a href="Login.aspx">Login</a>
+                        <a href="Signup.aspx">Sign Up</a>
+                    <% } else { %>
+                        <% if (Convert.ToString(Session["role"]) == "Admin") { %>
+                            <a href="Company.aspx">Company</a>
+                            <a href="AddProducts.aspx">Add Products</a>
+                        <% } %>
+                        <a href="Default.aspx?logout=1">Logout (<%: Session["user"] %>)</a>
+                    <% } %>
+                </div>
+                <div style="display:flex;align-items:center;gap:16px;">
+                    <% if (Convert.ToString(Session["role"]) != "Admin") { %>
+                    <a href="Cart.aspx" class="nav-cart">
+                        🛒
+                        <% int cartCount = CartCount(); if (cartCount > 0) { %>
+                        <span class="cart-count"><%= cartCount %></span>
+                        <% } %>
+                    </a>
+                    <% } %>
+                    <button type="button" class="nav-toggle" aria-label="Menu">☰</button>
+                </div>
+            </nav>
+        </header>
+
+        <!-- ===== Main Content ===== -->
+        <main class="site-main">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server"></asp:ContentPlaceHolder>
+        </main>
+
+        <!-- ===== Footer ===== -->
+        <footer class="site-footer">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-col">
+                        <h4>SHOESS</h4>
+                        <p style="font-size:0.85rem;color:rgba(255,255,255,0.5);line-height:1.6;">
+                            Premium footwear for every occasion. Style meets comfort in every pair.
+                        </p>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Quick Links</h4>
+                        <a href="Default.aspx">Home</a>
+                        <a href="Products.aspx">Products</a>
+                        <a href="About.aspx">About Us</a>
+                        <a href="Contact.aspx">Contact</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Account</h4>
+                        <% if (Session["user"] == null) { %>
+                            <a href="Login.aspx">Login</a>
+                            <a href="Signup.aspx">Sign Up</a>
+                        <% } else { %>
+                            <a href="Default.aspx?logout=1">Logout</a>
+                        <% } %>
+                        <% if (Convert.ToString(Session["role"]) != "Admin") { %>
+                            <a href="Cart.aspx">Cart</a>
+                            <a href="Checkout.aspx">Checkout</a>
+                        <% } %>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Contact Info</h4>
+                        <p style="font-size:0.85rem;color:rgba(255,255,255,0.5);margin:0;line-height:1.8;">
+                            📍 123 Shoe Street, Fashion City<br />
+                            📞 +1 (555) 123-4567<br />
+                            ✉️ hello@shoess.com
+                        </p>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    © 2026 SHOESS. All rights reserved. This is a demo website.
+                </div>
+            </div>
+        </footer>
+
+    </form>
+
+    <script src="js/Site.js" type="text/javascript"></script>
+    <asp:ContentPlaceHolder ID="scripts" runat="server"></asp:ContentPlaceHolder>
+</body>
+</html>
